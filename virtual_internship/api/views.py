@@ -1,12 +1,18 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import UpdateAPIView
 from .serializers import *
 
 
 class PerevalAPIView(APIView):
-    def get(self, request):
-        perevals = PerevalAdded.objects.all()
-        return Response({'perevals': PerevalAddedSerializer(perevals, many=True).data})
+    def get(self, request, id):
+        try:
+            pereval = get_object_or_404(PerevalAdded, pk=id)
+            return Response({'perevals': PerevalAddedSerializer(pereval).data})
+        except Exception:
+            return Response({'Error': 'Object not found'})
 
     def post(self, request):
         response = {'status': None, 'message': None, 'id': None}
@@ -33,3 +39,8 @@ class PerevalAPIView(APIView):
             response['message'] = pereval_serializer.errors
             response['id'] = None
             return Response({'response': response})
+
+
+class PerevalUpdateAPIView(UpdateAPIView):
+    queryset = PerevalAdded.objects.all()
+    serializers = PerevalAddedSerializer
