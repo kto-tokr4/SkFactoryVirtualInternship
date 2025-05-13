@@ -58,3 +58,16 @@ class PerevalAPIIdView(APIView):
                 return Response({'Error': 'Object status is not "NEW"'})
         except PerevalAdded.DoesNotExist:
             return Response({'Error': 'Object not found'})
+
+
+class PerevalAPIEmailView(APIView):
+
+    def get(self, request, user_email):
+        try:
+            perevals = PerevalAdded.objects.get(user__email=user_email)
+            return Response({'perevals': PerevalAddedSerializer(perevals).data})
+        except PerevalAdded.DoesNotExist:
+            return Response({'Error': 'Objects not found'})
+
+
+

@@ -32,13 +32,6 @@ class PerevalAddedSerializer(serializers.ModelSerializer):
         return pereval
 
     def update(self, instance, validated_data):
-        # coord_data = validated_data.pop('coords')
-        # coords = instance.coords
-        # print (coords, coord_data)
-        # print (Coords.objects.filter(pk=instance.coords.id).update(**coord_data))
-
-
-
         instance.beauty_title = validated_data.get("beauty_title", instance.beauty_title)
         instance.title = validated_data.get("title", instance.title)
         instance.other_titles = validated_data.get("other_titles", instance.other_titles)
@@ -52,13 +45,8 @@ class PerevalAddedSerializer(serializers.ModelSerializer):
         coord_data = validated_data.pop('coords')
         Coords.objects.filter(pk=instance.coords.id).update(**coord_data)
 
-        # instance.coords = Coords.objects.filter(pk=coords.id).update(**coord_data)
-        # instance.coords = Coords.objects.filter(pk=instance.coords.id).update(**coord_data)
-
         instance.save()
         return instance
-
-
 
 
 class ImagesSerializer(serializers.ModelSerializer):
